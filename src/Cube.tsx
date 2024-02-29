@@ -1,43 +1,46 @@
 import * as THREE from "three";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 
-export function Box(props) {
+export function Box(props: any) {
   const ref = useRef();
-
-  // // Optional: Rotate the box (commented out but included for demonstration)
-  // useFrame((state, delta) => {
-  //   ref.current.rotation.x += delta;
-  //   ref.current.rotation.y += delta;
-  //   ref.current.rotation.z += delta;
-  // });
-
   return (
     <lineSegments {...props} ref={ref}>
       <edgesGeometry
         attach="geometry"
         args={[new THREE.BoxGeometry(1, 1, 1)]}
       />
-      <lineBasicMaterial
-        attach="material"
-        color={props.hovered ? "hotpink" : "black"}
-      />
+      <lineBasicMaterial attach="material" color="black" />
     </lineSegments>
   );
 }
 
-export function GreenSquare(props) {
-  const ref = useRef();
+export function Square(props: any) {
+  const ref = useRef<any>();
+  const angleRad = THREE.MathUtils.degToRad(props.sliderAngle);
+
+  useFrame((state, delta) => {
+    if (props.animate) {
+      ref.current.rotation.y = angleRad;
+      ref.current.position.x = 0.5 + 0.5 * Math.cos(angleRad);
+      ref.current.position.y = 0.5 * Math.sin(angleRad);
+    }
+  });
 
   return (
     <mesh
-      {...props}
       ref={ref}
-      // Rotation is set to [Math.PI / 2, 0, 0] to make the plane face upwards.
-      rotation={[0, 0, 0]}
+      {...props}
+      rotation={props.rotation.map((degree: number) =>
+        THREE.MathUtils.degToRad(degree)
+      )}
     >
       <planeGeometry args={[1, 1]} />
-      <meshBasicMaterial attach="material" color="green" />
+      <meshStandardMaterial
+        attach="material"
+        color={props.color}
+        side={THREE.DoubleSide}
+      />
     </mesh>
   );
 }
