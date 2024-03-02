@@ -1,8 +1,9 @@
 import { Canvas } from "@react-three/fiber";
 import { Box, Square } from "./Cube";
-import { YAxisLine, Grid } from "./Grid";
+import { YAxisLine, XAxisLine, ZAxisLine, Grid } from "./Grid";
 import { OrbitControls } from "@react-three/drei";
 import { useState } from "react";
+import { Group } from "three";
 
 function App() {
   const [angleDeg, setAngleDeg] = useState(0);
@@ -37,7 +38,9 @@ function App() {
 
         <OrbitControls enableDamping={false} />
 
+        <XAxisLine />
         <YAxisLine />
+        <ZAxisLine />
         <Grid
           size={20}
           divisions={20}
@@ -46,19 +49,60 @@ function App() {
         />
 
         <Box position={[0, 0.5, 0]} />
+
         <Square
           position={[0, 0, 0]}
           rotation={[90, 0, 0]}
           color={"red"}
           animate={false}
         />
-        <Square
-          position={[1, 0, 0]}
-          rotation={[90, 0, 0]}
-          color={"green"}
-          animate={true}
-          sliderAngle={angleDeg}
-        />
+
+        <group position={[0, 0, 0]} rotation={[0, 0, 0]}>
+          <Square
+            position={[-1, 0, 0]}
+            rotation={[0, 0, 0]}
+            color={"black"}
+            animate={true}
+            number={3}
+            sliderAngle={angleDeg}
+          >
+            <Square
+              position={[0, 1, 0]}
+              rotation={[0, 0, 0]}
+              color={"grey"}
+              animate={true}
+              number={2}
+              sliderAngle={angleDeg}
+            >
+              <Square
+                position={[-1, 0, 0]}
+                rotation={[0, 0, 0]}
+                color={"green"}
+                animate={true}
+                number={1}
+                sliderAngle={angleDeg}
+              ></Square>
+            </Square>
+          </Square>
+
+          <Square
+            position={[0, 0, -1]}
+            rotation={[90, 0, 0]}
+            color={"blue"}
+            animate={true}
+            number={5}
+            sliderAngle={angleDeg}
+          >
+            <Square
+              position={[0, 0, 0]}
+              rotation={[0, 0, 0]}
+              color={"yellow"}
+              animate={true}
+              number={6}
+              sliderAngle={angleDeg}
+            ></Square>
+          </Square>
+        </group>
       </Canvas>
     </div>
   );

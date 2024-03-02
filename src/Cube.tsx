@@ -21,9 +21,35 @@ export function Square(props: any) {
 
   useFrame((state, delta) => {
     if (props.animate) {
-      ref.current.rotation.y = angleRad;
-      ref.current.position.x = 0.5 + 0.5 * Math.cos(angleRad);
-      ref.current.position.y = 0.5 * Math.sin(angleRad);
+      if (props.number == 3) {
+        ref.current.rotation.x = Math.PI / 2;
+        ref.current.rotation.y = -angleRad;
+        ref.current.position.x = -0.5 - 0.5 * Math.cos(angleRad);
+        ref.current.position.y = 0.5 * Math.sin(angleRad);
+      }
+      if (props.number == 5) {
+        ref.current.rotation.x = Math.PI / 2 + angleRad;
+        ref.current.position.z = -0.5 - 0.5 * Math.cos(angleRad);
+        ref.current.position.y = 0.5 * Math.sin(angleRad);
+      }
+      if (props.number == 6) {
+        ref.current.rotation.y = angleRad;
+        ref.current.position.z = -0.5 * Math.sin(angleRad);
+        ref.current.position.x = 0.5 + 0.5 * Math.cos(angleRad);
+      }
+      if (props.number == 2) {
+        ref.current.rotation.x = -angleRad;
+        ref.current.position.z = 0 - 0.5 * Math.sin(angleRad);
+        ref.current.position.y = 0.5 + 0.5 * Math.cos(angleRad);
+        ref.current.position.x = 0;
+      }
+
+      if (props.number == 1) {
+        ref.current.rotation.y = -angleRad;
+        ref.current.position.z = -0.5 * Math.sin(angleRad);
+        ref.current.position.y = 0;
+        ref.current.position.x = -0.5 - 0.5 * Math.cos(angleRad);
+      }
     }
   });
 
@@ -41,6 +67,7 @@ export function Square(props: any) {
         color={props.color}
         side={THREE.DoubleSide}
       />
+      {props.children}
     </mesh>
   );
 }
